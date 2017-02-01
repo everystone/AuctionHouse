@@ -6,6 +6,7 @@ import {router} from '../index'
 const API_URL = 'http://localhost:3333/'
 const LOGIN_URL = API_URL + 'users/login/'
 const SIGNUP_URL = API_URL + 'users/'
+const SAVE_MATERIAL = API_URL + "material/save"
 
 export default {
 
@@ -13,6 +14,17 @@ export default {
   user: {
     authenticated: false
   },
+
+
+
+  saveMaterial(context, material) {
+     context.$http.post(SAVE_MATERIAL, material, (data) => {
+       
+    }).error((err) => {
+      context.error = err
+    })
+  },
+
 
   // Send a request to the login URL and save the returned JWT
   login(context, creds, redirect) {

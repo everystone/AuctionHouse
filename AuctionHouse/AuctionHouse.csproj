@@ -70,6 +70,7 @@
     <Compile Include="CustomBootstrapper.cs" />
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\Material.cs" />
+    <Compile Include="Modules\MaterialModule.cs" />
     <Compile Include="Modules\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
