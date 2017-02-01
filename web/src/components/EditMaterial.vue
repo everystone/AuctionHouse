@@ -37,12 +37,12 @@
     },
     methods: {
       save() {
-        let m = {
-          name: this.material.name,
-          price: this.material.price
-        }
+        // let m = {
+        //   name: this.material.name,
+        //   price: this.material.price
+        // }
 
-        auth.saveMaterial(this, m)
+        auth.saveMaterial(this, this.material)
       }
     },
     route: {
