@@ -2,9 +2,10 @@
     <div class="col-sm-6 col-sm-offset-3">
       <h1>Auction House</h1>
       <table class="table">
-    <tr v-for="material in materials">
-        <td>{{ material.Name }}</td>
-        <td>{{ material.Price }}</td>
+    <tr v-for="material in materials" :key="material.Id">
+        <td>{{ material.id }}</td>
+        <td>{{ material.name }}</td>
+        <td>{{ material.price }}</td>
     </tr>
   </div>
     </div>
@@ -13,16 +14,24 @@
   <script>
   export default {
     data() {
+      
       return {
         quote: '',
-        materials: []
+        materials: [
+          {}
+        ]
       }
     },
+    created(){
+      this.getMaterials()
+    },
     methods: {
-      getQuote() {
+      getMaterials() {
         this.$http
-          .get('http://localhost:3001/api/random-quote', (data) => {
-            this.quote = data;
+          .get('http://localhost:3333/material/list', (data) => {
+            this.materials = data;
+            console.log('loaded new materials')
+            console.dir(data)
           })
           .error((err) => console.log(err))
       }

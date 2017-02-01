@@ -31,7 +31,11 @@
       return {
         material:{
           name: '',
-          price: 0
+          price: 0,
+          labor: 0,
+          experience: 0,
+          produce: 0,
+          id: 0
         }
       }
     },
