@@ -1,0 +1,8 @@
+https://auth0.com/blog/build-an-app-with-vuejs/
+https://github.com/NancyFx/Nancy/wiki/Hosting-nancy-with-owin#katana---httplistener-selfhost
+
+https://github.com/auth0-blog/vue-jwt-authentication
+
+node_modules\.bin\webpack-dev-server --inline --hot
+
+netsh http add urlacl url=http://+:8080/ user=DOMAIN\username
