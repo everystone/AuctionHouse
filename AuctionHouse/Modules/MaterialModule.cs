@@ -35,11 +35,36 @@ namespace AuctionHouse.Modules
             };
 
 
+            Get["/material/list/{col}"] = param =>
+            {
+                var col = this.Bind<string>();
+                //await Task.Delay(100);
+                switch (col)
+                {
+                    case "Price":
+                        return Response.AsJson(Program.Trader.Materials.OrderBy(m => m.Name));
+
+                    case "Profit":
+                        return Response.AsJson(Program.Trader.Materials.OrderBy(m => m.Profit));
+
+                    case "ProfitPerLabor":
+                        return Response.AsJson(Program.Trader.Materials.OrderBy(m => m.ProfitPerLabor));
+
+                    case "Craft Cost":
+                        return Response.AsJson(Program.Trader.Materials.OrderBy(m => m.MaterialCost));
+
+
+                    default:
+                        return Response.AsJson(Program.Trader.Materials);
+
+                }
+                
+                //return Program.Trader.Materials;
+            };
+
             Get["/material/list"] = param =>
             {
-                //await Task.Delay(100);
                 return Response.AsJson(Program.Trader.Materials);
-                //return Program.Trader.Materials;
             };
             Get["/material/get/{id}", true] = async (param, ct) =>
             {

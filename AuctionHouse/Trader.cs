@@ -39,6 +39,7 @@ namespace AuctionHouse
             {
                 var json = File.ReadAllText(fileName);
                 Materials = JsonConvert.DeserializeObject<List<Material>>(json);
+                Console.WriteLine("Loaded {0} Materials.", Materials.Count);
             }
         }
 

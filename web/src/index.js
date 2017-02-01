@@ -16,7 +16,7 @@ router.map({
   '/home': {
     component: Home
   },
-  'material': {
+  '/material': {
     component: EditMaterial
   },
   '/login': {
@@ -29,7 +29,7 @@ router.map({
 
 // Redirect to the home route if any routes are unmatched
 router.redirect({
-  '*': '/home'
+  '*': '/login'
 })
 
 // Start the app on the #app div

@@ -1,7 +1,7 @@
  <template>
     <div class="col-sm-4 col-sm-offset-4">
       <h2>Log In</h2>
-      <p>Log in to your account to get some great quotes.</p>
+      <p>E.T. phone home.</p>
       <div class="alert alert-danger" v-if="error">
         <p>{{ error }}</p>
       </div>
@@ -47,7 +47,7 @@
         }
         // We need to pass the component's this context
         // to properly make use of http in the auth service
-        auth.login(this, credentials, 'secretquote')
+        auth.login(this, credentials, 'home')
       }
     }
 
