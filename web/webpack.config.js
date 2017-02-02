@@ -11,7 +11,7 @@ module.exports = {
     }
   },
 
-  entry: ['./src/index.js', './src/auth/index.js'],
+  entry: ['./src/index.js'],
   // output configuration
   output: {
     path: __dirname + '/build/',

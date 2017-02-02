@@ -88,6 +88,7 @@
     <Compile Include="Auth\StatelessAuthConfigurationFactory.cs" />
     <Compile Include="Auth\UserMapper.cs" />
     <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Models\JwtToken.cs" />
     <Compile Include="Models\Material.cs" />
@@ -96,8 +97,10 @@
     <Compile Include="Modules\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repo\IMaterialRepo.cs" />
+    <Compile Include="Repo\IRepo.cs" />
+    <Compile Include="Repo\MaterialRepo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Trader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

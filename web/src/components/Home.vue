@@ -11,15 +11,15 @@
           <th v-on:click=sort('craft')>Craft Cost</th>
           <th v-on:click=sort('profit')>Profit</th>
           <th v-on:click=sort('fee')>Fee</th>
-          <th>Low</th>
-          <th>High</th>
+          <th v-on:click=sort('low')>Low</th>
+          <th v-on:click=sort('high')>High</th>
           <th v-on:click=sort('labor')>Labor</th>
-          <th v-on:click=sort('ppl')>Profit/Labor</th>
+          <th v-on:click=sort('profitperlabor')>Profit/Labor</th>
           <th v-on:click=sort('margin')>Margin</th>
         </tr>
         </thead>
         <tbody>
-    <tr v-for="material in materials" :key="material.Id">
+    <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)">
         <td>{{ material.id }}</td>
         <td>{{ material.status }}</td>
         <td>{{ material.name }}</td>
@@ -39,7 +39,8 @@
   </template>
 
   <script>
-  import auth from '../auth'
+  import api from '../api'
+  import store from '../store'
   export default {
     data() {
       
@@ -50,9 +51,15 @@
       }
     },
     created(){
-      auth.getMaterials(this)
+      api.getMaterials(this)
     },
     methods: {
+
+      edit(mat){
+        store.setSelected(mat)
+        api.navigate('material')
+      },
+
       sort(col){
         switch(col){
           case 'name':
@@ -61,36 +68,12 @@
             else
                this.materials.sort((a,b) => b.name.localeCompare(a.name))
           break
-          case 'price':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.price - b.price)
-            else
-              this.materials.sort((a,b) => b.price - a.price)
-            break
-          case 'profit':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.profit - b.profit)
-            else
-              this.materials.sort((a,b) => b.profit - a.profit)
-            break
-          case 'craft':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.materialcost - b.materialcost)
-            else
-              this.materials.sort((a,b) => b.materialcost - a.materialcost)
-            break
-          case 'ppl':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.profitperlabor - b.profitperlabor)
-            else
-              this.materials.sort((a,b) => b.profitperlabor - a.profitperlabor)
-            break       
-          case 'labor':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.labor - b.labor)
-            else
-              this.materials.sort((a,b) => b.labor - a.labor)
-            break                               
+          default:
+          if(this.ascending)
+            this.materials.sort((a,b) => a[col] - b[col])
+          else
+            this.materials.sort((a,b) => b[col] - a[col])
+          break                           
           }
           this.ascending = !this.ascending
       }
@@ -99,7 +82,7 @@
       // Check the users auth status before
       // allowing navigation to the route
       canActivate() {
-        return auth.user.authenticated
+        return api.user.authenticated
       }
     }
   }

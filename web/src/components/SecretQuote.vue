@@ -9,7 +9,7 @@
   </template>
 
   <script>
-  import auth from '../auth'
+  import api from '../api'
   export default {
     data() {
       return {
@@ -23,7 +23,7 @@
             this.quote = data;
           }, {
             // Attach the JWT header
-            headers: auth.getAuthHeader()
+            headers: api.getAuthHeader()
           })
           .error((err) => console.log(err))
       }
@@ -32,7 +32,7 @@
       // Check the users auth status before
       // allowing navigation to the route
       canActivate() {
-        return auth.user.authenticated
+        return api.user.authenticated
       }
     }
   }

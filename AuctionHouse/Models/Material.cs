@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuctionHouse.Repo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,28 +7,32 @@ using System.Threading.Tasks;
 
 namespace AuctionHouse.Models
 {
-    public class Material
+    public class Material : Entity
     {
+        private IMaterialRepo _repo;
+
         public Material()
         {
-
+        }
+        public void SetRepo(IMaterialRepo repo)
+        {
+            _repo = repo;
         }
 
-        public Material(string name, float price)
+        public Material(string name, float price, int id)
         {
             this.Name = name;
             this.Price = price;
-            this.Id = Program.Trader.Materials.Count;
+            this.Id = id;
         }
 
-        public int Id { get; set; }
-        public int Produce { get; set; }        // number of items produced when crafting
         public string Name { get; set; }
         public float Price { get; set; }    // sell price
+        public int Produce { get; set; }        // number of items produced when crafting
         public int Labor { get; set; }
-        public int Experience { get; set; }
         public float High { get; set; }
         public float Low { get; set; }
+        public int Experience { get; set; }
         // should these be methods?
         //public float ListingFee => TotalSellPrice * 0.1f; // 10%
         public float TotalSellPrice => (Price * Produce);
@@ -37,11 +42,9 @@ namespace AuctionHouse.Models
         public float Margin => (Profit / Price) * 100;
         public float MaterialCost => GetMats() != null ? GetMats().Sum(m => m.Key.Price * m.Value) : Price;
 
-        //public float MaterialCost => GetMats() != null ? GetMats().Sum(m => m.Key.SellPrice * m.Value) : SellPrice;
-        
             // For storage.
-        public Dictionary<int,int> CraftingRecipy { get; set; }
-        public Dictionary<Material, int> GetMats() => CraftingRecipy?.ToDictionary(i => Program.Trader.Materials.FirstOrDefault(m => m.Id == i.Key), i => i.Value);
+        public Dictionary<int,int> CraftingRecipe { get; set; }
+        public Dictionary<Material, int> GetMats() => CraftingRecipe?.ToDictionary(i => _repo.List.FirstOrDefault(m => m.Id == i.Key), i => i.Value);
 
 
         // History

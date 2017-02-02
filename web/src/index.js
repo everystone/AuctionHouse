@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './components/App.vue'
 import Home from './components/Home.vue'
-import EditMaterial from './components/EditMaterial.vue'
+import Edit from './components/Edit.vue'
 // import Signup from './components/Signup.vue'
 import Login from './components/Login.vue'
 import VueRouter from 'vue-router'
@@ -17,7 +17,7 @@ router.map({
     component: Home
   },
   '/material': {
-    component: EditMaterial
+    component: Edit
   },
   '/login': {
     component: Login

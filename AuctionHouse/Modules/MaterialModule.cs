@@ -1,4 +1,5 @@
 ﻿using AuctionHouse.Models;
+using AuctionHouse.Repo;
 using Nancy;
 using Nancy.ModelBinding;
 using Nancy.Security;
@@ -12,7 +13,7 @@ namespace AuctionHouse.Modules
 {
     public class MaterialModule : NancyModule
     {
-        public MaterialModule()
+        public MaterialModule(IMaterialRepo repo)
         {
 
             this.RequiresAuthentication();
@@ -22,23 +23,13 @@ namespace AuctionHouse.Modules
 
                 Material m = this.Bind<Material>(); // Model binding https://github.com/NancyFx/Nancy/wiki/Model-binding
 
-                if (Program.Trader.Materials.Contains(m))
-                {
-                    Program.Trader.Materials[Program.Trader.Materials.IndexOf(m)] = m;
-                    Console.WriteLine("Updated material: " + m);
-                    return "OK";
-                }
-
-                Program.Trader.Materials.Add(m);
-
-                // Check if material exist in db, update etc.
-                Console.WriteLine("Added new material: " + m);
+                repo.Update(m);
                 await Task.Delay(100);
                 return HttpStatusCode.OK;
             };
             Get["/material/list"] = param =>
             {
-                return Response.AsJson(Program.Trader.Materials);
+                return Response.AsJson(repo.List);
             };
             Get["/material/get/{id}", true] = async (param, ct) =>
             {

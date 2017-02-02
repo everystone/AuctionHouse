@@ -1,6 +1,6 @@
 // src/auth/index.js
 
-import {router} from '../index'
+import {router} from './index'
 
 // URL and endpoint constants
 const API_URL = 'http://localhost:3333/'
@@ -23,8 +23,10 @@ export default {
   },
 
   saveMaterial(context, material) {
+       console.log('saving material: ')
+       console.log(material)
      context.$http.post(SAVE_MATERIAL, material, (data) => {
-       
+      console.log('Saved!')
      },{
        // Attach the JWT header
       headers: this.getAuthHeader()
@@ -36,7 +38,6 @@ export default {
   getMaterials(context) {
      context.$http.get(LIST_MATERIAL, (data) => {
        console.log('Updated materials:')
-       console.log(data)
        context.materials = data
      },{
        // Attach the JWT header
@@ -44,6 +45,10 @@ export default {
     }).error((err) => {
       context.error = err
     })
+  },
+  navigate(page){
+    router.go(page)
+    //router.push({ name: 'user', params: { userId: 123 }})
   },
 
   // Send a request to the login URL and save the returned JWT

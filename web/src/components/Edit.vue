@@ -15,9 +15,9 @@
       <div class="form-group">
         <input
           type="number"
+          v-model.number="material.price"
           class="form-control"
           placeholder="Price"
-          v-model="material.price"
         >
       </div>
       <button class="btn btn-primary" @click="save()">Access</button>
@@ -25,7 +25,8 @@
   </template>
 
   <script>
-  import auth from '../auth'
+  import api from '../api'
+  import store from '../store'
   export default {
     data() {
       return {
@@ -39,21 +40,24 @@
         }
       }
     },
+
     methods: {
       save() {
-        // let m = {
-        //   name: this.material.name,
-        //   price: this.material.price
-        // }
-
-        auth.saveMaterial(this, this.material)
+        const mat = {
+          Name: this.material.name,
+          Price: this.material.price
+        }
+        api.saveMaterial(this, mat)
       }
+    },
+    created(){
+      this.material = store.state.selected
     },
     route: {
       // Check the users auth status before
       // allowing navigation to the route
       canActivate() {
-        return auth.user.authenticated
+        return api.user.authenticated
       }
     }
   }
