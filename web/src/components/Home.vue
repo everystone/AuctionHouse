@@ -2,6 +2,7 @@
     <div class="col-sm-10 col-sm-offset-1">
       <h1>Auction House</h1>
       <table class="table">
+        <thead class="thead-inverse">
         <tr>
           <th>Id</th>
           <th>Status</th>
@@ -16,6 +17,8 @@
           <th v-on:click=sort('ppl')>Profit/Labor</th>
           <th v-on:click=sort('margin')>Margin</th>
         </tr>
+        </thead>
+        <tbody>
     <tr v-for="material in materials" :key="material.Id">
         <td>{{ material.id }}</td>
         <td>{{ material.status }}</td>
@@ -30,7 +33,8 @@
         <td>{{ material.profitPerLabor }}</td>
         <td>{{ material.margin }}</td>
     </tr>
-  </div>
+    </tbody>
+      </table>
     </div>
   </template>
 
@@ -46,16 +50,9 @@
       }
     },
     created(){
-      this.getMaterials()
+      auth.getMaterials(this)
     },
     methods: {
-      getMaterials() {
-        this.$http
-          .get('http://localhost:3333/material/list', (data) => {
-            this.materials = data;
-          })
-          .error((err) => console.log(err))
-      },
       sort(col){
         switch(col){
           case 'name':
