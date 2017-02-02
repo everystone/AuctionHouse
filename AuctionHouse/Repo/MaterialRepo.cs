@@ -36,21 +36,24 @@ namespace AuctionHouse.Repo
 
         public void Update(Material entity)
         {
-            var index = List.IndexOf(entity);
-            if(index > 0)
+            
+            var material = List.FirstOrDefault(m => m.Id == entity.Id);
+            if(material != null)
             {
-                var material = List[index];
-
-                material.Price = entity.Price;
-                if (material.History == null)
+                var index = List.IndexOf(material);
+                //material.Price = entity.Price;
+                List[index] = entity;
+                entity.SetRepo(this);
+                if (entity.History == null)
                 {
-                    material.History = new List<History>();
+                    entity.History = new List<History>();
                 }
-                material.History.Add(new History(entity.Price, entity.MaterialCost, entity.Profit));
+                entity.History.Add(new History(entity.Price, entity.MaterialCost, entity.Profit));
                 Console.WriteLine("Material Updated: " + entity);
             }
             else
             {
+                entity.Id = List.Count;
                 List.Add(entity);
                 Console.WriteLine("New material added: " + entity);
             }

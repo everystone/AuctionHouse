@@ -1,7 +1,7 @@
 // src/auth/index.js
 
 import {router} from './index'
-
+import store from './store'
 // URL and endpoint constants
 const API_URL = 'http://localhost:3333/'
 const LOGIN_URL = API_URL + 'users/login/'
@@ -35,10 +35,11 @@ export default {
     })
   },
 
-  getMaterials(context) {
+  getMaterials(context, cb) {
      context.$http.get(LIST_MATERIAL, (data) => {
        console.log('Updated materials:')
-       context.materials = data
+       store.state.list = data
+       cb()
      },{
        // Attach the JWT header
       headers: this.getAuthHeader()

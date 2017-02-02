@@ -1,12 +1,16 @@
 ﻿using AuctionHouse.Repo;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuctionHouse.Models
 {
+
+    public class Ingredient
+    {
+        public int id;
+        public int count;
+    }
+
     public class Material : Entity
     {
         private IMaterialRepo _repo;
@@ -43,8 +47,9 @@ namespace AuctionHouse.Models
         public float MaterialCost => GetMats() != null ? GetMats().Sum(m => m.Key.Price * m.Value) : Price;
 
             // For storage.
-        public Dictionary<int,int> CraftingRecipe { get; set; }
-        public Dictionary<Material, int> GetMats() => CraftingRecipe?.ToDictionary(i => _repo.List.FirstOrDefault(m => m.Id == i.Key), i => i.Value);
+        public List<Ingredient> CraftingRecipe { get; set; }
+
+        public Dictionary<Material, int> GetMats() => CraftingRecipe?.ToDictionary(i => _repo.List.FirstOrDefault(m => m.Id == i.id), i => i.count);
 
 
         // History

@@ -8,7 +8,7 @@
           <th>Status</th>
           <th v-on:click=sort('name')>Name</th>
           <th v-on:click=sort('price')>Price</th>
-          <th v-on:click=sort('craft')>Craft Cost</th>
+          <th v-on:click=sort('materialcost')>Craft Cost</th>
           <th v-on:click=sort('profit')>Profit</th>
           <th v-on:click=sort('fee')>Fee</th>
           <th v-on:click=sort('low')>Low</th>
@@ -46,12 +46,15 @@
       
       return {
         quote: '',
-        materials: [],
+        materials: store.state.list,
         ascending: false
       }
     },
     created(){
-      api.getMaterials(this)
+      api.getMaterials(this, () => {
+        this.materials = store.state.list
+        console.log(this.materials)
+      })
     },
     methods: {
 
