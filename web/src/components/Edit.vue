@@ -9,16 +9,18 @@
     </div>
     <div class="form-group">
       <input type="number" v-model.number="material.price" class="form-control" placeholder="Price">
+      <input type="number" v-model.number="material.labor" class="form-control" placeholder="Labor">
+      <input type="number" v-model.number="material.produce" class="form-control" placeholder="Produce">
     </div>
 
      <div class="form-group">
-      <select v-model="selected">
+      <select v-model="selected" class="form-control">
         <option v-for="material in mats" v-bind:value="material.id">
         {{ material.name}}
         </option>
         </select>
         <input type="number" v-model.number="count" class="form-control" placeholder="Count">
-        <button class="btn btn-primary" @click="add()">Add</button>
+        <button class="btn btn-primary" @click="add()" class="form-control">Add</button>
      </div>
 
     <table class="table">
@@ -51,7 +53,7 @@
           price: 0,
           labor: 0,
           experience: 0,
-          produce: 0,
+          produce: 1,
           id: 0
         },
         mats : store.state.list,
@@ -63,8 +65,11 @@
     methods: {
       save() {
         const mat = {
+          Id: this.material.id,
           Name: this.material.name,
           Price: this.material.price,
+          Labor: this.material.labor,
+          Produce: this.material.produce,
           craftingRecipe: this.material.craftingRecipe
         }
         api.saveMaterial(this, mat)

@@ -8,7 +8,7 @@
           <th>Status</th>
           <th v-on:click=sort('name')>Name</th>
           <th v-on:click=sort('price')>Price</th>
-          <th v-on:click=sort('materialcost')>Craft Cost</th>
+          <th v-on:click=sort('materialCost')>Craft Cost</th>
           <th v-on:click=sort('profit')>Profit</th>
           <th v-on:click=sort('fee')>Fee</th>
           <th v-on:click=sort('low')>Low</th>
@@ -24,7 +24,7 @@
         <td>{{ material.status }}</td>
         <td>{{ material.name }}</td>
         <td>{{ material.price }}</td>
-        <td>{{ material.materialcost }}</td>
+        <td>{{ material.materialCost }}</td>
         <td>{{ material.profit }}</td>
         <td>{{ material.fee }}</td>
         <td>{{ material.low}}</td>
