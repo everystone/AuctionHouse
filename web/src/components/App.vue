@@ -1,14 +1,16 @@
  <template>
+   <div class="container">
     <nav class="navbar navbar-default">
-      <div class="container">
+      <div>
         <ul class="nav navbar-nav">
-          <li><a v-link="'login'">Login</a></li>
-          <li><a v-link="'home'">Home</a></li>
-          <li><a v-link="'material'">Material</a></li>
+          <li><router-link to="login">Login</router-link></li>
+          <li><router-link to="home">Home</router-link></li>
+          <li><router-link to="material">Material</router-link></li>
         </ul>
       </div>    
     </nav>
-    <div class="container">
+    <div>
       <router-view></router-view>
     </div>
+   </div>
   </template>

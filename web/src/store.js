@@ -7,7 +7,7 @@ export default {
     list: []
   },
   setSelected (selected) {
-    //this.debug && console.log('setMessageAction triggered with', newValue)
+    // this.debug && console.log('setMessageAction triggered with', newValue)
     this.state.selected = selected
   },
   clearSelected () {
@@ -15,7 +15,5 @@ export default {
     this.state.selected = {}
   },
   fetchList(){
-      
   }
-
 }

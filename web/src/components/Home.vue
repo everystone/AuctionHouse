@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="col-sm-10">
       <h1>Auction House</h1>
       <div class="form-group">
@@ -9,16 +10,16 @@
         <tr>
           <th>#</th>
           <th>Status</th>
-          <th v-on:click=sort('name')>Name</th>
-          <th v-on:click=sort('price')>Price</th>
-          <th v-on:click=sort('materialCost')>Craft</th>
-          <th v-on:click=sort('profit')>Profit</th>
-          <th v-on:click=sort('fee')>Fee</th>
-          <th v-on:click=sort('low')>Low</th>
-          <th v-on:click=sort('high')>High</th>
-          <th v-on:click=sort('labor')>Labor</th>
-          <th v-on:click=sort('profitPerlabor')>Profit/Labor</th>
-          <th v-on:click=sort('margin')>Margin</th>
+          <th v-on:click="sort('name')">Name</th>
+          <th v-on:click="sort('price')">Price</th>
+          <th v-on:click="sort('materialCost')">Craft</th>
+          <th v-on:click="sort('profit')">Profit</th>
+          <th v-on:click="sort('fee')">Fee</th>
+          <th v-on:click="sort('low')">Low</th>
+          <th v-on:click="sort('high')">High</th>
+          <th v-on:click="sort('labor')">Labor</th>
+          <th v-on:click="sort('profitPerlabor')">Profit/Labor</th>
+          <th v-on:click="sort('margin')">Margin</th>
         </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
     <div class="col-sm-2">
       <p>Graphs.</p>
     </div>
+    </div>
   </template>
 
   <script>
@@ -49,7 +51,6 @@
   import store from '../store'
   export default {
     data() {
-      
       return {
         quote: '',
         materials: [],
@@ -60,7 +61,7 @@
     created(){
       api.getMaterials(this, () => {
         this.materials = store.state.list
-        this.materials.sort((a,b) => b.profit - a.profit)
+        this.materials.sort((a, b) => b.profit - a.profit)
         console.log(this.materials)
       })
     },
@@ -76,26 +77,26 @@
         api.navigate('material')
       },
       sort(col){
-        switch(col){
+        switch (col){
           case 'name':
-            if(this.ascending)
-              this.materials.sort((a,b) => a.name.localeCompare(b.name))
-            else
-               this.materials.sort((a,b) => b.name.localeCompare(a.name))
-          break
+            if (this.ascending) {
+              this.materials.sort((a, b) => a.name.localeCompare(b.name))
+            } else {
+              this.materials.sort((a, b) => b.name.localeCompare(a.name))
+            }
+            break
           default:
-          if(this.ascending)
-            this.materials.sort((a,b) => a[col] - b[col])
-          else
-            this.materials.sort((a,b) => b[col] - a[col])
-          break                           
-          }
-          this.ascending = !this.ascending
+            if (this.ascending) {
+              this.materials.sort((a, b) => a[col] - b[col])
+            } else {
+              this.materials.sort((a, b) => b[col] - a[col])
+            }
+            break
+        }
+        this.ascending = !this.ascending
       }
     },
-        route: {
-      // Check the users auth status before
-      // allowing navigation to the route
+    route: {
       canActivate() {
         return api.user.authenticated
       }

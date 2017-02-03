@@ -20,7 +20,7 @@
         </option>
         </select>
         <input type="number" v-model.number="count" class="form-control" placeholder="Count">
-        <button class="btn btn-primary" @click="add()" class="form-control">Add</button>
+        <button class="btn btn-primary" @click="add()">Add</button>
      </div>
 
     <table class="table">
@@ -48,7 +48,7 @@
   export default {
     data() {
       return {
-        material:{
+        material: {
           name: '',
           price: 0,
           labor: 0,
@@ -56,9 +56,10 @@
           produce: 1,
           id: 0
         },
-        mats : store.state.list,
+        mats: store.state.list,
         selected: {},
-        count: 0
+        count: 0,
+        error: ''
       }
     },
 
@@ -76,13 +77,13 @@
         api.navigate('home')
       },
       add(){
-        if(this.material.craftingRecipe == null){
+        if (this.material.craftingRecipe == null) {
           this.material.craftingRecipe = []
         }
         console.log(this.material)
         this.material.craftingRecipe.push({
           'id': this.selected,
-          'count':  this.count
+          'count': this.count
         })
       }
     },
