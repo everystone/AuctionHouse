@@ -49,11 +49,18 @@ namespace AuctionHouse.Repo
                     entity.History = new List<History>();
                 }
                 entity.History.Add(new History(entity.Price, entity.MaterialCost, entity.Profit));
+
+                // high & low
+                entity.High = entity.Price > entity.High ? entity.Price : entity.High;
+                entity.Low = entity.Price < entity.Low ? entity.Price : entity.Low;
+
                 Console.WriteLine("Material Updated: " + entity);
             }
             else
             {
-                entity.Id = List.Count;
+                entity.Id = List.Count + 1;
+                entity.High = entity.Price;
+                entity.Low = entity.Price;
                 List.Add(entity);
                 Console.WriteLine("New material added: " + entity);
             }

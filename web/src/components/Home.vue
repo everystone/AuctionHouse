@@ -14,7 +14,7 @@
           <th v-on:click=sort('low')>Low</th>
           <th v-on:click=sort('high')>High</th>
           <th v-on:click=sort('labor')>Labor</th>
-          <th v-on:click=sort('profitperlabor')>Profit/Labor</th>
+          <th v-on:click=sort('profitPerlabor')>Profit/Labor</th>
           <th v-on:click=sort('margin')>Margin</th>
         </tr>
         </thead>

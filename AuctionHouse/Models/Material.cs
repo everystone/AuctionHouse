@@ -23,12 +23,12 @@ namespace AuctionHouse.Models
             _repo = repo;
         }
 
-        public Material(string name, float price, int id)
-        {
-            this.Name = name;
-            this.Price = price;
-            this.Id = id;
-        }
+        //public Material(string name, float price, int id)
+        //{
+        //    this.Name = name;
+        //    this.Price = price;
+        //    this.Id = id;
+        //}
 
         public string Name { get; set; }
         public float Price { get; set; }    // sell price

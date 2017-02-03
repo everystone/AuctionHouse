@@ -73,6 +73,7 @@
           craftingRecipe: this.material.craftingRecipe
         }
         api.saveMaterial(this, mat)
+        api.navigate('home')
       },
       add(){
         if(this.material.craftingRecipe == null){
