@@ -1,6 +1,9 @@
 <template>
     <div class="col-sm-10 col-sm-offset-1">
       <h1>Auction House</h1>
+      <div class="form-group">
+      <input type="text" v-model="search" class="form-control" placeholder="Search">
+    </div>
       <table class="table">
         <thead class="thead-inverse">
         <tr>
@@ -47,7 +50,8 @@
       return {
         quote: '',
         materials: store.state.list,
-        ascending: false
+        ascending: false,
+        search: ''
       }
     },
     created(){
@@ -56,13 +60,17 @@
         console.log(this.materials)
       })
     },
+    watch: {
+      search: function(val, old) {
+        this.materials = store.state.list.filter(m => m.name.toLowerCase().indexOf(val.toLowerCase()) >= 0)
+      }
+    },
     methods: {
 
       edit(mat){
         store.setSelected(mat)
         api.navigate('material')
       },
-
       sort(col){
         switch(col){
           case 'name':
