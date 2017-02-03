@@ -1,17 +1,17 @@
 <template>
-    <div class="col-sm-10 col-sm-offset-1">
+    <div class="col-sm-10">
       <h1>Auction House</h1>
       <div class="form-group">
       <input type="text" v-model="search" class="form-control" placeholder="Search">
     </div>
-      <table class="table">
+      <table class="table table-striped table-hover">
         <thead class="thead-inverse">
         <tr>
-          <th>Id</th>
+          <th>#</th>
           <th>Status</th>
           <th v-on:click=sort('name')>Name</th>
           <th v-on:click=sort('price')>Price</th>
-          <th v-on:click=sort('materialCost')>Craft Cost</th>
+          <th v-on:click=sort('materialCost')>Craft</th>
           <th v-on:click=sort('profit')>Profit</th>
           <th v-on:click=sort('fee')>Fee</th>
           <th v-on:click=sort('low')>Low</th>
@@ -39,6 +39,9 @@
     </tbody>
       </table>
     </div>
+    <div class="col-sm-2">
+      <p>Graphs.</p>
+    </div>
   </template>
 
   <script>
@@ -49,7 +52,7 @@
       
       return {
         quote: '',
-        materials: store.state.list,
+        materials: [],
         ascending: false,
         search: ''
       }
@@ -57,6 +60,7 @@
     created(){
       api.getMaterials(this, () => {
         this.materials = store.state.list
+        this.materials.sort((a,b) => b.profit - a.profit)
         console.log(this.materials)
       })
     },

@@ -52,6 +52,10 @@ namespace AuctionHouse.Repo
 
                 // high & low
                 entity.High = entity.Price > entity.High ? entity.Price : entity.High;
+
+                // temporary fix
+                if (entity.Low == 0) entity.Low = entity.Price;
+
                 entity.Low = entity.Price < entity.Low ? entity.Price : entity.Low;
 
                 Console.WriteLine("Material Updated: " + entity);
