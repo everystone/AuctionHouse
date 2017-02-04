@@ -1,48 +1,51 @@
 <template>
   <div>
-    <div class="col-sm-10">
-      <h1>Auction House</h1>
-      <div class="form-group">
-      <input type="text" v-model="search" class="form-control" placeholder="Search">
+      <div class="col-sm-6">
+      <input type="text" v-model="search" class="form-control" placeholder="Search" style="margin-top:15px">
     </div>
-      <table class="table table-striped table-hover">
-        <thead class="thead-inverse">
+    <div class="col-sm-2">
+      <chart :height="250" v-bind:chartData="chartData"></chart>
+    </div>
+  <div class="col-sm-11">
+    <table class="table table-striped table-hover" style="table-layout:fixed">
+      <thead>
         <tr>
-          <th>#</th>
-          <th>Status</th>
-          <th v-on:click="sort('name')">Name</th>
-          <th v-on:click="sort('price')">Price</th>
-          <th v-on:click="sort('materialCost')">Craft</th>
-          <th v-on:click="sort('profit')">Profit</th>
-          <th v-on:click="sort('fee')">Fee</th>
-          <th v-on:click="sort('low')">Low</th>
-          <th v-on:click="sort('high')">High</th>
-          <th v-on:click="sort('labor')">Labor</th>
-          <th v-on:click="sort('profitPerlabor')">Profit/Labor</th>
-          <th v-on:click="sort('margin')">Margin</th>
+          <th width="5">#</th>
+          <th width="5">#</th>
+          <th width="50" v-on:click="sort('name')">Name</th>
+          <th width="5" v-on:click="sort('price')">Price</th>
+          <th width="5" v-on:click="sort('materialCost')">Craft</th>
+          <th width="5" v-on:click="sort('profit')">Profit</th>
+          <th width="5" v-on:click="sort('fee')">Fee</th>
+          <th width="5" v-on:click="sort('low')">Low</th>
+          <th width="5" v-on:click="sort('high')">High</th>
+          <th width="5" v-on:click="sort('labor')">Labor</th>
+          <th width="5" v-on:click="sort('profitPerlabor')">P/L</th>
+          <th width="5" v-on:click="sort('margin')">Margin</th>
         </tr>
-        </thead>
+    </thead>
+    </table>
+    </div>
+
+    <div class="col-sm-11" style="overflow-y: auto;height: 700px;">
+      <table class="table table-striped table-hover" style="table-layout:fixed">
         <tbody>
     <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)" v-on:mouseover="loadChart(material)">
-        <td>{{ material.id }}</td>
-        <td>{{ material.status }}</td>
-        <td>{{ material.name }}</td>
-        <td>{{ material.price }}</td>
-        <td>{{ material.materialCost }}</td>
-        <td>{{ material.profit }}</td>
-        <td>{{ material.fee }}</td>
-        <td>{{ material.low}}</td>
-        <td>{{ material.high}}</td>
-        <td>{{ material.labor}}</td>
-        <td>{{ material.profitPerLabor }}</td>
-        <td>{{ material.margin }}</td>
+        <td width="5">{{ material.id }}</td>
+        <td width="5">{{ material.status }}</td>
+        <td width="50">{{ material.name }}</td>
+        <td width="5">{{ material.price }}</td>
+        <td width="5">{{ material.materialCost }}</td>
+        <td width="5">{{ material.profit }}</td>
+        <td width="5">{{ material.fee }}</td>
+        <td width="5">{{ material.low}}</td>
+        <td width="5">{{ material.high}}</td>
+        <td width="5">{{ material.labor}}</td>
+        <td width="5">{{ material.profitPerLabor }}</td>
+        <td width="5">{{ material.margin }}</td>
     </tr>
     </tbody>
       </table>
-    </div>
-    <div class="col-sm-2">
-      <chart v-bind:chartData="chartData"></chart>
-    </div>
     </div>
   </template>
 
@@ -83,13 +86,11 @@
       },
       loadChart(material) {
         console.log('load: ' + material)
-        // store.setSelected(material)
-        // this.chart.data = [1, 2, 3, 4, 5]
         this.chartData = {
           labels: material.history.map(h => '.'),
           datasets: [
             {
-              label: 'GitHub Commits',
+              label: 'Price History',
               backgroundColor: '#f87979',
               data: material.history.map(h => h.price)
             }
