@@ -23,7 +23,7 @@
         </tr>
         </thead>
         <tbody>
-    <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)">
+    <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)" v-on:mouseover="loadChart(material)">
         <td>{{ material.id }}</td>
         <td>{{ material.status }}</td>
         <td>{{ material.name }}</td>
@@ -41,7 +41,7 @@
       </table>
     </div>
     <div class="col-sm-2">
-      <p>Graphs.</p>
+      <chart v-bind:chartData="chartData"></chart>
     </div>
     </div>
   </template>
@@ -49,14 +49,19 @@
   <script>
   import api from '../api'
   import store from '../store'
+  import Chart from './HistoryChart'
   export default {
     data() {
       return {
         quote: '',
         materials: [],
         ascending: false,
-        search: ''
+        search: '',
+        chartData: []
       }
+    },
+    components: {
+      'chart': Chart
     },
     created(){
       api.getMaterials(this, () => {
@@ -76,6 +81,21 @@
         store.setSelected(mat)
         api.navigate('material')
       },
+      loadChart(material) {
+        console.log('load: ' + material)
+        // store.setSelected(material)
+        // this.chart.data = [1, 2, 3, 4, 5]
+        this.chartData = {
+          labels: material.history.map(h => '.'),
+          datasets: [
+            {
+              label: 'GitHub Commits',
+              backgroundColor: '#f87979',
+              data: material.history.map(h => h.price)
+            }
+          ]
+        }
+      },
       sort(col){
         switch (col){
           case 'name':
@@ -94,11 +114,6 @@
             break
         }
         this.ascending = !this.ascending
-      }
-    },
-    route: {
-      canActivate() {
-        return api.user.authenticated
       }
     }
   }

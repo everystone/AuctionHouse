@@ -3,7 +3,6 @@
     <nav class="navbar navbar-default">
       <div>
         <ul class="nav navbar-nav">
-          <li><router-link to="login">Login</router-link></li>
           <li><router-link to="home">Home</router-link></li>
           <li><router-link to="material">Material</router-link></li>
         </ul>

@@ -3,7 +3,7 @@
 import {router} from './main'
 import store from './store'
 // URL and endpoint constants
-const API_URL = 'http://localhost:3333/'
+const API_URL = 'http://192.168.1.6:3333/'
 const LOGIN_URL = API_URL + 'users/login/'
 const SAVE_MATERIAL = API_URL + 'material/save'
 const LIST_MATERIAL = API_URL + 'material/list'
