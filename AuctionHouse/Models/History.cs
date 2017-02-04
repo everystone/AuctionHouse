@@ -12,6 +12,11 @@ namespace AuctionHouse.Models
         public float MaterialCost { get; set; }
         public float Profit { get; set; }
         public DateTime Date { get; set; }
+
+        public History()
+        {
+
+        }
         public History(float price, float materialCost, float profit)
         {
             this.Price = price;

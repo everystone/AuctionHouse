@@ -1,4 +1,5 @@
 ﻿using AuctionHouse.Repo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,10 +41,10 @@ namespace AuctionHouse.Models
         // should these be methods?
         //public float ListingFee => TotalSellPrice * 0.1f; // 10%
         public float TotalSellPrice => (Price * Produce);
-        public float Fee => TotalSellPrice * 0.05f; // 5% trade fee
-        public float Profit => Labor > 0 ? (TotalSellPrice - MaterialCost - Fee) : 0;
-        public float ProfitPerLabor => ((Profit < Labor) || Labor == 0) ? 0 : (Profit / Labor);
-        public float Margin => (Profit / Price) * 100;
+        public float Fee => (float)Math.Round(TotalSellPrice * 0.05f, 2); // 5% trade fee
+        public float Profit => Labor > 0 ? (float)Math.Round((TotalSellPrice - MaterialCost - Fee), 2) : 0;
+        public float ProfitPerLabor => ((Profit < Labor) || Labor == 0) ? 0 : (float)(Math.Round((Profit / Labor), 2));
+        public float Margin => (float)Math.Round((Profit / Price) * 100, 2);
         public float MaterialCost => GetMats() != null ? GetMats().Sum(m => m.Key.Price * m.Value) : Price;
 
             // For storage.

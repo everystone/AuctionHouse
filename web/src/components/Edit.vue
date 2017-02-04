@@ -5,13 +5,21 @@
       <p>{{ error }}</p>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Name" v-model="material.name">
+      <label for="name">Name</label>
+      <input id="name" type="text" class="form-control" placeholder="Name" v-model="material.name">
     </div>
     <div class="form-group">
-      <input type="number" v-model.number="material.price" class="form-control" placeholder="Price">
-      <input type="number" v-model.number="material.labor" class="form-control" placeholder="Labor">
+      <label for="price">Price</label>
+      <input id="price" type="number" v-model.number="material.price" class="form-control" placeholder="Price">
+      </div>
+      <div class="form-group">
+      <label for="labor">Labor</label>
+      <input id="labor" type="number" v-model.number="material.labor" class="form-control" placeholder="Labor">
+      </div>
+      <div class="form-group">
+      <label>Produce</label>
       <input type="number" v-model.number="material.produce" class="form-control" placeholder="Produce">
-    </div>
+      </div>
 
      <div class="form-group">
       <select v-model="selected" class="form-control">
@@ -31,8 +39,8 @@
         </tr>
       </thead>
       <tbody>
-      <tr v-for="info in material.craftingRecipe">
-        <td>{{ info.id }}</td>
+      <tr v-for="info in getRecipeNames">
+        <td>{{ info.name }}</td>
         <td>{{ info.count }}</td>
       </tr>
       </tbody>
@@ -54,15 +62,25 @@
           labor: 0,
           experience: 0,
           produce: 1,
+          history: [],
           id: 0
         },
         mats: store.state.list,
         selected: {},
-        count: 0,
+        count: 1,
         error: ''
       }
     },
-
+    computed: {
+      getRecipeNames() {
+        return this.material.craftingRecipe.map(m => {
+          return {
+            name: store.state.list.find(i => i.id === m.id).name,
+            count: m.count
+          }
+        })
+      }
+    },
     methods: {
       save() {
         const mat = {
@@ -71,7 +89,8 @@
           Price: this.material.price,
           Labor: this.material.labor,
           Produce: this.material.produce,
-          craftingRecipe: this.material.craftingRecipe
+          craftingRecipe: this.material.craftingRecipe,
+          History: this.material.history
         }
         api.saveMaterial(this, mat)
         api.navigate('home')

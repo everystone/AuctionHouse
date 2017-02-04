@@ -3,15 +3,15 @@
       <div class="col-sm-6">
       <input type="text" v-model="search" class="form-control" placeholder="Search" style="margin-top:15px">
     </div>
-    <div class="col-sm-2">
-      <chart :height="250" v-bind:chartData="chartData"></chart>
+    <div class="col-sm-4">
+      <chart :height="100" v-bind:chartData="chartData"></chart>
     </div>
   <div class="col-sm-11">
     <table class="table table-striped table-hover" style="table-layout:fixed">
-      <thead>
+      <thead class="thead-inverse">
         <tr>
-          <th width="5">#</th>
-          <th width="5">#</th>
+          <th width="3">#</th>
+          <th width="3">Status</th>
           <th width="50" v-on:click="sort('name')">Name</th>
           <th width="5" v-on:click="sort('price')">Price</th>
           <th width="5" v-on:click="sort('materialCost')">Craft</th>
@@ -31,8 +31,8 @@
       <table class="table table-striped table-hover" style="table-layout:fixed">
         <tbody>
     <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)" v-on:mouseover="loadChart(material)">
-        <td width="5">{{ material.id }}</td>
-        <td width="5">{{ material.status }}</td>
+        <td width="3">{{ material.id }}</td>
+        <td width="3">{{ material.status }}</td>
         <td width="50">{{ material.name }}</td>
         <td width="5">{{ material.price }}</td>
         <td width="5">{{ material.materialCost }}</td>
@@ -68,9 +68,12 @@
     },
     created(){
       api.getMaterials(this, () => {
+        console.log('Loaded mats.')
         this.materials = store.state.list
-        this.materials.sort((a, b) => b.profit - a.profit)
-        console.log(this.materials)
+        if (this.materials) {
+          this.materials.sort((a, b) => b.profit - a.profit)
+          console.log(this.materials)
+        }
       })
     },
     watch: {
@@ -85,16 +88,18 @@
         api.navigate('material')
       },
       loadChart(material) {
-        console.log('load: ' + material)
-        this.chartData = {
-          labels: material.history.map(h => '.'),
-          datasets: [
-            {
-              label: 'Price History',
-              backgroundColor: '#f87979',
-              data: material.history.map(h => h.price)
-            }
-          ]
+        console.log('Mouseover: ' + material.name)
+        if (material.history) {
+          this.chartData = {
+            labels: material.history.map(h => '.'),
+            datasets: [
+              {
+                label: material.name,
+                backgroundColor: '#f87979',
+                data: material.history.map(h => h.price)
+              }
+            ]
+          }
         }
       },
       sort(col){
