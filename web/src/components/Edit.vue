@@ -21,14 +21,20 @@
       <input type="number" v-model.number="material.produce" class="form-control" placeholder="Produce">
       </div>
 
+    <div class="form-inline">
      <div class="form-group">
       <select v-model="selected" class="form-control">
         <option v-for="material in mats" v-bind:value="material.id">
         {{ material.name}}
         </option>
         </select>
+     </div>
+     <div class="form-group">
         <input type="number" v-model.number="count" class="form-control" placeholder="Count">
+     </div>
+     <div class="form-group">
         <button class="btn btn-primary" @click="add()">Add</button>
+     </div>
      </div>
 
     <table class="table">
@@ -73,6 +79,9 @@
     },
     computed: {
       getRecipeNames() {
+        if (!this.material.craftingRecipe) {
+          return
+        }
         return this.material.craftingRecipe.map(m => {
           return {
             name: store.state.list.find(i => i.id === m.id).name,

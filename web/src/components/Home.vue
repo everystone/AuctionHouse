@@ -6,6 +6,9 @@
     <div class="col-sm-4">
       <chart :height="100" v-bind:chartData="chartData"></chart>
     </div>
+
+    <modal v-if="showModal"/>
+
   <div class="col-sm-11">
     <table class="table table-striped table-hover" style="table-layout:fixed">
       <thead class="thead-inverse">
@@ -30,7 +33,7 @@
     <div class="col-sm-11" style="overflow-y: auto;height: 700px;">
       <table class="table table-striped table-hover" style="table-layout:fixed">
         <tbody>
-    <tr v-for="material in materials" :key="material.Id" v-on:click="edit(material)" v-on:mouseover="loadChart(material)">
+    <tr v-for="material in materials" :key="material.Id" v-on:click="quickEdit(material)" v-on:mouseover="loadChart(material)">
         <td width="3">{{ material.id }}</td>
         <td width="3">{{ material.status }}</td>
         <td width="50">{{ material.name }}</td>
@@ -53,6 +56,7 @@
   import api from '../api'
   import store from '../store'
   import Chart from './HistoryChart'
+  import Modal from './Modal'
   export default {
     data() {
       return {
@@ -60,11 +64,13 @@
         materials: [],
         ascending: false,
         search: '',
-        chartData: []
+        chartData: [],
+        showModal: false
       }
     },
     components: {
-      'chart': Chart
+      'chart': Chart,
+      'modal': Modal
     },
     created(){
       api.getMaterials(this, () => {
@@ -82,7 +88,9 @@
       }
     },
     methods: {
-
+      quickEdit(mat){
+        this.showModal = true
+      },
       edit(mat){
         store.setSelected(mat)
         api.navigate('material')
