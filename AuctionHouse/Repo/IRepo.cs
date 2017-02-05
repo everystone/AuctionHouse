@@ -12,7 +12,7 @@ namespace AuctionHouse.Repo
         List<T> List { get; }
         void Add(T entity);
         void Delete(T entity);
-        void Update(T entity);
+        List<T> Update(T entity);
         T FindById(int id);
     }
 }

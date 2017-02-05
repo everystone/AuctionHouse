@@ -22,26 +22,38 @@ export default {
     }
   },
 
-  saveMaterial(context, material) {
-    console.log('saving material: ')
-    console.log(material)
+  saveMaterial(context, material, callback) {
     context.$http.post(SAVE_MATERIAL, material,
       {
         headers: this.getAuthHeader()
       }).then(response => {
+        // Returns a list of updated materials.
+        const items = response.body
+        console.log(items)
+        items.forEach(item => {
+          let index = store.state.list.findIndex(m => m.id === item.id)
+          if (index >= 0) {
+            console.log('Updated item: ' + item.name)
+            store.state.list[index] = item
+          } else {
+            store.state.list.push(item)
+          }
+        })
+        if (callback) {
+          callback()
+        }
       }, response => {
         context.error = response.statusText
       })
   },
-
-  getMaterials(context, cb) {
+  getMaterials(context, callback) {
     context.$http.get(LIST_MATERIAL,
       {
         headers: this.getAuthHeader()
       }).then(response => {
         console.log('Updated materials:')
         store.state.list = response.body
-        cb()
+        callback()
       }, response => {
         context.error = response.statusText
       })

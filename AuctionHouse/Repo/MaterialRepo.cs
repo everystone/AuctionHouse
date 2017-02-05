@@ -34,31 +34,45 @@ namespace AuctionHouse.Repo
             return List.FirstOrDefault(m => m.Id == id);
         }
 
-        public void Update(Material entity)
+        public List<Material> Update(Material entity)
         {
-            
-            var material = List.FirstOrDefault(m => m.Id == entity.Id);
-            if(material != null)
+            var search = List.FirstOrDefault(m => m.Id == entity.Id);
+            if(search != null)
             {
-                var index = List.IndexOf(material);
-                //material.Price = entity.Price;
-                List[index] = entity;
-                entity.SetRepo(this);
-                if (entity.History == null)
+                var index = List.IndexOf(search);
+                var material = List[index];
+                // Are we only updating price? (quickEdit)
+                if (entity.Name == null)
                 {
-                    entity.History = new List<History>();
+                    material.Price = entity.Price;
+                }else
+                {
+                    // Full update, overwrite with all data from client
+                    material = entity;
+                    material.SetRepo(this);
                 }
-                entity.History.Add(new History(entity.Price, entity.MaterialCost, entity.Profit));
+
 
                 // high & low
-                entity.High = entity.Price > entity.High ? entity.Price : entity.High;
+                material.High = material.Price > material.High ? material.Price : material.High;
 
                 // temporary fix
-                if (entity.Low == 0) entity.Low = entity.Price;
+                if (material.Low == 0) material.Low = material.Price;
 
-                entity.Low = entity.Price < entity.Low ? entity.Price : entity.Low;
+                material.Low = material.Price < material.Low ? material.Price : material.Low;
 
-                Console.WriteLine("Material Updated: " + entity);
+                if (material.History == null)
+                {
+                    material.History = new List<History>();
+                }
+                material.History.Add(new History(material.Price, material.MaterialCost, material.Profit));
+                // because changing the price of an item affects all items that has it in the recipe, send all.
+                // find all affected items
+                var affected = List.Where(i => i.CraftingRecipe != null && i.CraftingRecipe.Any(r => r.id == material.Id)).ToList();
+                Console.WriteLine("Updated: {0}, affected: {1}", material, string.Join(",", affected.Select(a => a.Name)));
+                affected.Add(material); // Also return the updated item.
+                Save();
+                return affected;
             }
             else
             {
@@ -67,9 +81,9 @@ namespace AuctionHouse.Repo
                 entity.Low = entity.Price;
                 List.Add(entity);
                 Console.WriteLine("New material added: " + entity);
+                Save();
+                return new List<Material>() { entity };
             }
-
-            Save();
         }
 
         public void Save()

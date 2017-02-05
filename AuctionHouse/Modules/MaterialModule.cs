@@ -15,18 +15,15 @@ namespace AuctionHouse.Modules
     {
         public MaterialModule(IMaterialRepo repo)
         {
-
             this.RequiresAuthentication();
-
             Post["/material/save", true] = async (x, ct) =>
             {
-
                 Material m = this.Bind<Material>(); // Model binding https://github.com/NancyFx/Nancy/wiki/Model-binding
-
-                repo.Update(m);
-                await Task.Delay(100);
-                return HttpStatusCode.OK;
+                var updates = repo.Update(m);
+                await Task.Delay(50);
+                return Response.AsJson(updates);
             };
+
             Get["/material/list"] = param =>
             {
                 return Response.AsJson(repo.List);

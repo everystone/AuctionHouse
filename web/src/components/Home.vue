@@ -7,7 +7,7 @@
       <chart :height="100" v-bind:chartData="chartData"></chart>
     </div>
 
-    <modal v-if="showModal"/>
+    <modal v-if="showModal" v-bind:material="quickEditMaterial" @close="closeModal"/>
 
   <div class="col-sm-11">
     <table class="table table-striped table-hover" style="table-layout:fixed">
@@ -65,7 +65,8 @@
         ascending: false,
         search: '',
         chartData: [],
-        showModal: false
+        showModal: false,
+        quickEditMaterial: {}
       }
     },
     components: {
@@ -78,7 +79,6 @@
         this.materials = store.state.list
         if (this.materials) {
           this.materials.sort((a, b) => b.profit - a.profit)
-          console.log(this.materials)
         }
       })
     },
@@ -89,11 +89,16 @@
     },
     methods: {
       quickEdit(mat){
+        this.quickEditMaterial = mat
         this.showModal = true
       },
       edit(mat){
         store.setSelected(mat)
         api.navigate('material')
+      },
+      closeModal() {
+        this.showModal = false
+        this.materials = store.state.list
       },
       loadChart(material) {
         console.log('Mouseover: ' + material.name)

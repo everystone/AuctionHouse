@@ -119,13 +119,6 @@
       this.material = store.state.selected
       console.log('Loaded:')
       console.log(this.material)
-    },
-    route: {
-      // Check the users auth status before
-      // allowing navigation to the route
-      canActivate() {
-        return api.user.authenticated
-      }
     }
   }
   </script>
