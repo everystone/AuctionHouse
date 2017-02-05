@@ -4,7 +4,7 @@
       <input type="text" v-model="search" class="form-control" placeholder="Search" style="margin-top:15px">
     </div>
     <div class="col-sm-4">
-      <chart :height="100" v-bind:chartData="chartData"></chart>
+      <!--<chart :height="100" v-bind:chartData="chartData"></chart>-->
     </div>
 
     <modal v-if="showModal" v-bind:material="quickEditMaterial" @close="closeModal"/>
@@ -25,6 +25,8 @@
           <th width="5" v-on:click="sort('labor')">Labor</th>
           <th width="5" v-on:click="sort('profitPerlabor')">P/L</th>
           <th width="5" v-on:click="sort('margin')">Margin</th>
+          <th width="5">Actions</th>
+
         </tr>
     </thead>
     </table>
@@ -33,7 +35,7 @@
     <div class="col-sm-11" style="overflow-y: auto;height: 700px;">
       <table class="table table-striped table-hover" style="table-layout:fixed">
         <tbody>
-    <tr v-for="material in materials" :key="material.Id" v-on:click="quickEdit(material)" v-on:mouseover="loadChart(material)">
+    <tr v-for="material in materials" :key="material.Id" v-on:click="quickEdit(material)">
         <td width="3">{{ material.id }}</td>
         <td width="3">{{ material.status }}</td>
         <td width="50">{{ material.name }}</td>
@@ -46,6 +48,7 @@
         <td width="5">{{ material.labor}}</td>
         <td width="5">{{ material.profitPerLabor }}</td>
         <td width="5">{{ material.margin }}</td>
+        <td width="5"><Button class="btn btn-sm btn-info" @click="edit(material)">edit</Button></td>
     </tr>
     </tbody>
       </table>
@@ -55,7 +58,6 @@
   <script>
   import api from '../api'
   import store from '../store'
-  import Chart from './HistoryChart'
   import Modal from './Modal'
   export default {
     data() {
@@ -64,13 +66,11 @@
         materials: [],
         ascending: false,
         search: '',
-        chartData: [],
         showModal: false,
         quickEditMaterial: {}
       }
     },
     components: {
-      'chart': Chart,
       'modal': Modal
     },
     created(){
@@ -99,21 +99,6 @@
       closeModal() {
         this.showModal = false
         this.materials = store.state.list
-      },
-      loadChart(material) {
-        console.log('Mouseover: ' + material.name)
-        if (material.history) {
-          this.chartData = {
-            labels: material.history.map(h => '.'),
-            datasets: [
-              {
-                label: material.name,
-                backgroundColor: '#f87979',
-                data: material.history.map(h => h.price)
-              }
-            ]
-          }
-        }
       },
       sort(col){
         switch (col){

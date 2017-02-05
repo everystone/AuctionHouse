@@ -4,9 +4,10 @@
             <div class="modal-wrapper">
                 <div class="modal-container form-inline">
                 <h2>{{material.name}}</h2>
+                <chart :height="100" v-bind:chartData="chartData"></chart>
                     <div class="form-group">
                       <label>Price</label>  
-                      <input type="number" v-model.number="newPrice">
+                      <input type="number" v-model.number="newPrice" autofocus>
                     </div>
                     <div class="form-group">
                     <button class="btn btn-primary" @click="save">Update</button>
@@ -23,12 +24,17 @@
 
 <script>
   import api from '../api'
+  import Chart from './HistoryChart'
   export default {
     props: ['material'],
     data() {
       return {
-        newPrice: this.material.price
+        newPrice: this.material.price,
+        chartData: []
       }
+    },
+    components: {
+      'chart': Chart
     },
     methods: {
       save() {
@@ -41,6 +47,20 @@
         api.saveMaterial(this, updated, () => {
           this.$emit('close')
         })
+      }
+    },
+    created() {
+      if (this.material.history) {
+        this.chartData = {
+          labels: this.material.history.map(h => '.'),
+          datasets: [
+            {
+              label: this.material.name,
+              backgroundColor: '#f87979',
+              data: this.material.history.map(h => h.price)
+            }
+          ]
+        }
       }
     }
   }
