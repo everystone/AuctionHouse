@@ -39,3 +39,11 @@
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+.productlist {
+  cursor: pointer;
+}
+
+.listholder{
+  /*height: 700px;*/
+}

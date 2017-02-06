@@ -1,9 +1,8 @@
 // src/auth/index.js
 
-import {router} from './main'
 import store from './store'
 // URL and endpoint constants
-const API_URL = 'http://192.168.1.6:3333/'
+const API_URL = 'http://' + window.location.hostname + ':3333/'
 const LOGIN_URL = API_URL + 'users/login/'
 const SAVE_MATERIAL = API_URL + 'material/save'
 const LIST_MATERIAL = API_URL + 'material/list'
@@ -58,8 +57,8 @@ export default {
         context.error = response.statusText
       })
   },
-  navigate(page){
-    router.push(page)
+  navigate(ctx, page){
+    ctx.$router.push(page)
   },
 
   // Send a request to the login URL and save the returned JWT
@@ -70,7 +69,7 @@ export default {
 
       // Redirect to a specified route
       if (redirect) {
-        router.push(redirect)
+        context.$router.push(redirect)
       }
     }, (err) => {
       context.error = err.statusText

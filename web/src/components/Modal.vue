@@ -4,7 +4,7 @@
             <div class="modal-wrapper">
                 <div class="modal-container form-inline">
                 <h2>{{material.name}}</h2>
-                <chart :height="100" v-bind:chartData="chartData"></chart>
+                <chart :height="200" v-bind:chartData="chartData"></chart>
                     <div class="form-group">
                       <label>Price</label>  
                       <input type="number" v-model.number="newPrice" autofocus>
@@ -52,7 +52,7 @@
     created() {
       if (this.material.history) {
         this.chartData = {
-          labels: this.material.history.map(h => '.'),
+          labels: this.material.history.map(h => new Date(h.date).toLocaleDateString()),
           datasets: [
             {
               label: this.material.name,

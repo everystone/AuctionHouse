@@ -8,6 +8,7 @@ using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using AuctionHouse.Auth;
 using Nancy.Authentication.Stateless;
+using Nancy.Conventions;
 
 namespace AuctionHouse
 {
@@ -36,6 +37,11 @@ namespace AuctionHouse
 
 
             Console.WriteLine("Custom bootstrapper..");
+        }
+        protected override void ConfigureConventions(NancyConventions nancyConventions)
+        {
+            nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("/", "Content"));
+            base.ConfigureConventions(nancyConventions);
         }
     }
 }

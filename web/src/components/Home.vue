@@ -32,8 +32,8 @@
     </table>
     </div>
 
-    <div class="col-sm-11" style="overflow-y: auto;height: 700px;">
-      <table class="table table-striped table-hover" style="table-layout:fixed">
+    <div class="col-sm-11 listholder" v-bind:style="listStyle">
+      <table class="table table-striped table-hover productlist" style="table-layout:fixed">
         <tbody>
     <tr v-for="material in materials" :key="material.Id" v-on:click="quickEdit(material)">
         <td width="3">{{ material.id }}</td>
@@ -67,13 +67,19 @@
         ascending: false,
         search: '',
         showModal: false,
-        quickEditMaterial: {}
+        quickEditMaterial: {},
+        listStyle: {
+          'height': '350px',
+          'overflow-y': 'auto'
+        }
       }
     },
     components: {
       'modal': Modal
     },
     created(){
+      // set size of table
+      this.listStyle.height = window.innerWidth - 150 + 'px'
       api.getMaterials(this, () => {
         console.log('Loaded mats.')
         this.materials = store.state.list
@@ -94,11 +100,12 @@
       },
       edit(mat){
         store.setSelected(mat)
-        api.navigate('material')
+        api.navigate(this, 'material')
       },
       closeModal() {
         this.showModal = false
         this.materials = store.state.list
+        // highlight the changed items in list somehow.. too see which items was affected by the price change.
       },
       sort(col){
         switch (col){
