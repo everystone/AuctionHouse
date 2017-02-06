@@ -77,9 +77,12 @@
     components: {
       'modal': Modal
     },
-    created(){
+    mounted() {
       // set size of table
-      this.listStyle.height = window.innerWidth - 150 + 'px'
+      this.listStyle.height = (window.innerHeight - 200) + 'px'
+      console.log(this.listStyle.height)
+    },
+    created() {
       api.getMaterials(this, () => {
         console.log('Loaded mats.')
         this.materials = store.state.list
