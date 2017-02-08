@@ -46,8 +46,8 @@
         // api.saveMaterial(this, updated, () => {
         //   this.$emit('close')
         // })
-        this.$store.dispatch('quickSave', {context: this, item: updated}).then(res => {
-          this.$emit('close')
+        this.$store.dispatch('quickSave', {context: this, item: updated}).then(items => {
+          this.$emit('updated', items)
         }, error => {
           console.log('Error: ' + error)
         })

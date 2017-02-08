@@ -21,8 +21,8 @@ export default {
       History: state.edit.history
     }
     return new Promise((resolve, reject) => {
-      Api.post(context, Constants.SAVE_ITEM, item).then(items => {
-        commit('UPDATE_ITEMS', items)
+      Api.post(Constants.SAVE_ITEM, item).then(items => {
+        commit('REPLACE_ITEMS', items)
         resolve(items)
       }, error => {
         reject(error)
@@ -31,8 +31,8 @@ export default {
   },
   quickSave({commit, state}, data) {
     return new Promise((resolve, reject) => {
-      Api.post(data.context, Constants.SAVE_ITEM, data.item).then(items => {
-        commit('UPDATE_ITEMS', items)
+      Api.post(Constants.SAVE_ITEM, data.item).then(items => {
+        commit('REPLACE_ITEMS', items)
         resolve(items)
       }, error => {
         reject(error)

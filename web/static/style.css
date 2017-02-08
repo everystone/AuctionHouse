@@ -44,5 +44,6 @@
   cursor: pointer;
 }
 
-.listholder{
+.highlight {
+  background-color: #b3efb5;
 }

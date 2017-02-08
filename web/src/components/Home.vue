@@ -7,7 +7,7 @@
       <!--<chart :height="100" v-bind:chartData="chartData"></chart>-->
     </div>
 
-    <modal v-if="showModal" v-bind:material="quickEditMaterial" @close="closeModal"/>
+    <modal v-if="showModal" v-bind:material="quickEditMaterial" @close="closeModal" @updated="itemsUpdated"/>
 
   <div class="col-sm-11">
     <table class="table table-striped table-hover" style="table-layout:fixed">
@@ -33,9 +33,9 @@
     </div>
 
     <div class="col-sm-11 listholder" v-bind:style="listStyle">
-      <table class="table table-striped table-hover productlist" style="table-layout:fixed">
+      <table class="table table-hover productlist" style="table-layout:fixed">
         <tbody>
-    <tr v-for="item in items" :key="item.Id" v-on:click="quickEdit(item)">
+    <tr v-for="item in items" :key="item.Id" v-on:click="quickEdit(item)" :class="{ active : item.highlight}">
         <td width="3">{{ item.id }}</td>
         <td width="3">{{ item.status }}</td>
         <td width="50">{{ item.name }}</td>
@@ -103,7 +103,12 @@
       },
       closeModal() {
         this.showModal = false
-        // highlight the changed items in list somehow.. too see which items was affected by the price change.
+      },
+      // When changing price via Modal, this is the affected items returned from server.
+      itemsUpdated(items) {
+        // console.log('items updated: ')
+        // console.log(items)
+        this.showModal = false
       },
       sort(col){
         switch (col){

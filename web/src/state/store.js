@@ -23,6 +23,8 @@ export default new Vuex.Store({
       items.forEach(item => {
         let index = state.items.findIndex(m => m.id === item.id)
         if (index >= 0) {
+          // Add custom class property, to highlight item in table.
+          item.highlight = true
           console.log('Updated item: ' + item.name)
           state.items.splice(index, 1, item)
         } else {
