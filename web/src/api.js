@@ -1,4 +1,5 @@
 
+import Vue from 'vue'
 export default {
 
   // User object will let us check authentication status
@@ -14,9 +15,9 @@ export default {
     }
   },
 
-  post(context, url, data) {
+  post(url, data) {
     return new Promise((resolve, reject) => {
-      context.$http.post(url, data, {
+      Vue.http.post(url, data, {
         headers: this.getAuthHeader()
       }).then(response => {
         resolve(response.body)
@@ -25,9 +26,9 @@ export default {
       })
     })
   },
-  get(context, url) {
+  get(url) {
     return new Promise((resolve, reject) => {
-      context.$http.get(url, {
+      Vue.http.get(url, {
         headers: this.getAuthHeader()
       }).then(response => {
         resolve(response.body)

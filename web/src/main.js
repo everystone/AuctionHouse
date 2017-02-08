@@ -7,7 +7,7 @@ import Login from './components/Login.vue'
 import auth from './api'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
-import store from './store'
+import store from './state/store'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 

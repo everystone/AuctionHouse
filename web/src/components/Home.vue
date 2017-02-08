@@ -103,26 +103,25 @@
       },
       closeModal() {
         this.showModal = false
-        // force this.items to be re-computed?
         // highlight the changed items in list somehow.. too see which items was affected by the price change.
       },
       sort(col){
-        // switch (col){
-        //   case 'name':
-        //     if (this.ascending) {
-        //       this.items.sort((a, b) => a.name.localeCompare(b.name))
-        //     } else {
-        //       this.items.sort((a, b) => b.name.localeCompare(a.name))
-        //     }
-        //     break
-        //   default:
-        //     if (this.ascending) {
-        //       this.items.sort((a, b) => a[col] - b[col])
-        //     } else {
-        //       this.items.sort((a, b) => b[col] - a[col])
-        //     }
-        //     break
-        // }
+        switch (col){
+          case 'name':
+            if (this.ascending) {
+              this.items.sort((a, b) => a.name.localeCompare(b.name))
+            } else {
+              this.items.sort((a, b) => b.name.localeCompare(a.name))
+            }
+            break
+          default:
+            if (this.ascending) {
+              this.items.sort((a, b) => a[col] - b[col])
+            } else {
+              this.items.sort((a, b) => b[col] - a[col])
+            }
+            break
+        }
         this.ascending = !this.ascending
       }
     }
