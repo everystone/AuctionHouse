@@ -57,21 +57,9 @@
 </template>
 
   <script>
-  import api from '../api'
-  import store from '../store'
   export default {
     data() {
       return {
-        material: {
-          name: '',
-          price: 0,
-          labor: 0,
-          experience: 0,
-          produce: 1,
-          history: [],
-          id: 0
-        },
-        mats: store.state.list,
         selected: {},
         count: 1,
         error: ''
@@ -84,25 +72,21 @@
         }
         return this.material.craftingRecipe.map(m => {
           return {
-            name: store.state.list.find(i => i.id === m.id).name,
+            name: this.$store.state.items.find(i => i.id === m.id).name,
             count: m.count
           }
         })
+      },
+      material: function() {
+        return this.$store.state.edit
+      },
+      mats: function() {
+        return this.$store.state.items
       }
     },
     methods: {
       save() {
-        const mat = {
-          Id: this.material.id,
-          Name: this.material.name,
-          Price: this.material.price,
-          Labor: this.material.labor,
-          Produce: this.material.produce,
-          craftingRecipe: this.material.craftingRecipe,
-          History: this.material.history
-        }
-        api.saveMaterial(this, mat)
-        api.navigate('home')
+        this.$store.dispatch('saveEdit', this)
       },
       add(){
         if (this.material.craftingRecipe == null) {
@@ -116,7 +100,6 @@
       }
     },
     created(){
-      this.material = store.state.selected
       console.log('Loaded:')
       console.log(this.material)
     }

@@ -1,11 +1,4 @@
-// src/auth/index.js
 
-import store from './store'
-// URL and endpoint constants
-const API_URL = 'http://' + window.location.hostname + ':3333/'
-const LOGIN_URL = API_URL + 'users/login/'
-const SAVE_MATERIAL = API_URL + 'material/save'
-const LIST_MATERIAL = API_URL + 'material/list'
 export default {
 
   // User object will let us check authentication status
@@ -21,58 +14,26 @@ export default {
     }
   },
 
-  saveMaterial(context, material, callback) {
-    context.$http.post(SAVE_MATERIAL, material,
-      {
+  post(context, url, data) {
+    return new Promise((resolve, reject) => {
+      context.$http.post(url, data, {
         headers: this.getAuthHeader()
       }).then(response => {
-        // Returns a list of updated materials.
-        const items = response.body
-        console.log(items)
-        items.forEach(item => {
-          let index = store.state.list.findIndex(m => m.id === item.id)
-          if (index >= 0) {
-            console.log('Updated item: ' + item.name)
-            store.state.list[index] = item
-          } else {
-            store.state.list.push(item)
-          }
-        })
-        if (callback) {
-          callback()
-        }
+        resolve(response.body)
       }, response => {
-        context.error = response.statusText
+        reject(response.body)
       })
+    })
   },
-  getMaterials(context, callback) {
-    context.$http.get(LIST_MATERIAL,
-      {
+  get(context, url) {
+    return new Promise((resolve, reject) => {
+      context.$http.get(url, {
         headers: this.getAuthHeader()
       }).then(response => {
-        console.log('Updated materials:')
-        store.state.list = response.body
-        callback()
+        resolve(response.body)
       }, response => {
-        context.error = response.statusText
+        reject(response.body)
       })
-  },
-  navigate(ctx, page){
-    ctx.$router.push(page)
-  },
-
-  // Send a request to the login URL and save the returned JWT
-  login(context, creds, redirect) {
-    context.$http.post(LOGIN_URL, creds).then(data => {
-      localStorage.setItem('token', data.body)
-      this.user.authenticated = true
-
-      // Redirect to a specified route
-      if (redirect) {
-        context.$router.push(redirect)
-      }
-    }, (err) => {
-      context.error = err.statusText
     })
   },
   logout () {

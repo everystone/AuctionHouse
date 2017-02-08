@@ -23,7 +23,6 @@
 
 
 <script>
-  import api from '../api'
   import Chart from './HistoryChart'
   export default {
     props: ['material'],
@@ -44,8 +43,13 @@
           id: this.material.id,
           price: this.newPrice
         }
-        api.saveMaterial(this, updated, () => {
+        // api.saveMaterial(this, updated, () => {
+        //   this.$emit('close')
+        // })
+        this.$store.dispatch('quickSave', {context: this, item: updated}).then(res => {
           this.$emit('close')
+        }, error => {
+          console.log('Error: ' + error)
         })
       }
     },

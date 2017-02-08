@@ -6,3 +6,10 @@ https://github.com/auth0-blog/vue-jwt-authentication
 node_modules\.bin\webpack-dev-server --inline --hot
 
 netsh http add urlacl url=http://+:8080/ user=DOMAIN\username
+
+
+
+Ideas:
+
+Green color of rows if price are up to date (check history, check if latest entry is today)
+Highlight rows of affected items after price change.

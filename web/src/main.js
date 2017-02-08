@@ -7,6 +7,7 @@ import Login from './components/Login.vue'
 import auth from './api'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import store from './store'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 
@@ -16,7 +17,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     { path: '/home', component: Home },
-    { path: '/material', component: Edit },
+    { path: '/edit', component: Edit },
     { path: '/login', component: Login },
     { path: '*', redirect: '/login' }
   ]
@@ -35,6 +36,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router: router,
+  store: store,
   render: h => h(App)
 })
 

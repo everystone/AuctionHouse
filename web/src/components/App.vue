@@ -4,7 +4,7 @@
       <div>
         <ul class="nav navbar-nav">
           <li><router-link to="home">Home</router-link></li>
-          <li><router-link to="material">Material</router-link></li>
+          <li><router-link to="edit">Edit Item</router-link></li>
         </ul>
       </div>    
     </nav>

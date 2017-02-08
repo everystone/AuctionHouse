@@ -35,20 +35,20 @@
     <div class="col-sm-11 listholder" v-bind:style="listStyle">
       <table class="table table-striped table-hover productlist" style="table-layout:fixed">
         <tbody>
-    <tr v-for="material in materials" :key="material.Id" v-on:click="quickEdit(material)">
-        <td width="3">{{ material.id }}</td>
-        <td width="3">{{ material.status }}</td>
-        <td width="50">{{ material.name }}</td>
-        <td width="5">{{ material.price }}</td>
-        <td width="5">{{ material.materialCost }}</td>
-        <td width="5">{{ material.profit }}</td>
-        <td width="5">{{ material.fee }}</td>
-        <td width="5">{{ material.low}}</td>
-        <td width="5">{{ material.high}}</td>
-        <td width="5">{{ material.labor}}</td>
-        <td width="5">{{ material.profitPerLabor }}</td>
-        <td width="5">{{ material.margin }}</td>
-        <td width="5"><Button class="btn btn-sm btn-info" @click="edit(material)">edit</Button></td>
+    <tr v-for="item in items" :key="item.Id" v-on:click="quickEdit(item)">
+        <td width="3">{{ item.id }}</td>
+        <td width="3">{{ item.status }}</td>
+        <td width="50">{{ item.name }}</td>
+        <td width="5">{{ item.price }}</td>
+        <td width="5">{{ item.materialCost }}</td>
+        <td width="5">{{ item.profit }}</td>
+        <td width="5">{{ item.fee }}</td>
+        <td width="5">{{ item.low}}</td>
+        <td width="5">{{ item.high}}</td>
+        <td width="5">{{ item.labor}}</td>
+        <td width="5">{{ item.profitPerLabor }}</td>
+        <td width="5">{{ item.margin }}</td>
+        <td width="5"><Button class="btn btn-sm btn-info" @click="edit(item)">edit</Button></td>
     </tr>
     </tbody>
       </table>
@@ -56,14 +56,11 @@
   </template>
 
   <script>
-  import api from '../api'
-  import store from '../store'
   import Modal from './Modal'
   export default {
     data() {
       return {
         quote: '',
-        materials: [],
         ascending: false,
         search: '',
         showModal: false,
@@ -77,23 +74,21 @@
     components: {
       'modal': Modal
     },
+    computed: {
+      items: function() {
+        return this.$store.state.filtered
+      }
+    },
     mounted() {
       // set size of table
       this.listStyle.height = (window.innerHeight - 200) + 'px'
-      console.log(this.listStyle.height)
     },
     created() {
-      api.getMaterials(this, () => {
-        console.log('Loaded mats.')
-        this.materials = store.state.list
-        if (this.materials) {
-          this.materials.sort((a, b) => b.profit - a.profit)
-        }
-      })
+      this.$store.dispatch('fetch', this)
     },
     watch: {
       search: function(val, old) {
-        this.materials = store.state.list.filter(m => m.name.toLowerCase().indexOf(val.toLowerCase()) >= 0)
+        this.$store.dispatch('filter', val)
       }
     },
     methods: {
@@ -102,31 +97,32 @@
         this.showModal = true
       },
       edit(mat){
-        store.setSelected(mat)
-        api.navigate(this, 'material')
+        // api.navigate(this, 'material')
+        this.$store.dispatch('load', mat)
+        this.$router.push('edit')
       },
       closeModal() {
         this.showModal = false
-        this.materials = store.state.list
+        // force this.items to be re-computed?
         // highlight the changed items in list somehow.. too see which items was affected by the price change.
       },
       sort(col){
-        switch (col){
-          case 'name':
-            if (this.ascending) {
-              this.materials.sort((a, b) => a.name.localeCompare(b.name))
-            } else {
-              this.materials.sort((a, b) => b.name.localeCompare(a.name))
-            }
-            break
-          default:
-            if (this.ascending) {
-              this.materials.sort((a, b) => a[col] - b[col])
-            } else {
-              this.materials.sort((a, b) => b[col] - a[col])
-            }
-            break
-        }
+        // switch (col){
+        //   case 'name':
+        //     if (this.ascending) {
+        //       this.items.sort((a, b) => a.name.localeCompare(b.name))
+        //     } else {
+        //       this.items.sort((a, b) => b.name.localeCompare(a.name))
+        //     }
+        //     break
+        //   default:
+        //     if (this.ascending) {
+        //       this.items.sort((a, b) => a[col] - b[col])
+        //     } else {
+        //       this.items.sort((a, b) => b[col] - a[col])
+        //     }
+        //     break
+        // }
         this.ascending = !this.ascending
       }
     }
