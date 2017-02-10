@@ -10,6 +10,9 @@ export default new Vuex.Store({
     filtered: []
   },
   mutations: {
+    NEW (state) {
+      state.edit = {}
+    },
     LOAD (state, item) {
       state.edit = item
     },

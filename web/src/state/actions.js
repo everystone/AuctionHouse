@@ -42,6 +42,9 @@ export default {
   load ({commit}, item) {
     commit('LOAD', item)
   },
+  new ({commit}) {
+    commit('NEW')
+  },
   login ({commit}, data) {
     let context = data.context
     let creds = data.creds

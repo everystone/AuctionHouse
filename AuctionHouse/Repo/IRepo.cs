@@ -1,4 +1,5 @@
 ﻿using AuctionHouse.Models;
+using Nancy.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AuctionHouse.Repo
         List<T> List { get; }
         void Add(T entity);
         void Delete(T entity);
-        List<T> Update(T entity);
+        List<T> Update(T entity, IUserIdentity user);
         T FindById(int id);
     }
 }

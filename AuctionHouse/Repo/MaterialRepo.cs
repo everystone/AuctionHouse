@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AuctionHouse.Models;
 using Newtonsoft.Json;
 using System.IO;
+using Nancy.Security;
 
 namespace AuctionHouse.Repo
 {
@@ -34,13 +35,14 @@ namespace AuctionHouse.Repo
             return List.FirstOrDefault(m => m.Id == id);
         }
 
-        public List<Material> Update(Material entity)
+        public List<Material> Update(Material entity, IUserIdentity user)
         {
             var search = List.FirstOrDefault(m => m.Id == entity.Id);
             if(search != null)
             {
                 var index = List.IndexOf(search);
                 var material = List[index];
+                material.SetRepo(this);
                 // Are we only updating price? (quickEdit)
                 if (entity.Name == null)
                 {
@@ -49,10 +51,9 @@ namespace AuctionHouse.Repo
                 {
                     // Full update, overwrite with all data from client
                     material = entity;
-                    material.SetRepo(this);
                 }
 
-
+                
                 // high & low
                 material.High = material.Price > material.High ? material.Price : material.High;
 
@@ -65,17 +66,20 @@ namespace AuctionHouse.Repo
                 {
                     material.History = new List<History>();
                 }
-                material.History.Add(new History(material.Price, material.MaterialCost, material.Profit));
+                material.History.Add(new History(material.Price, material.MaterialCost, material.Profit, user));
                 // because changing the price of an item affects all items that has it in the recipe, send all.
                 // find all affected items
                 var affected = List.Where(i => i.CraftingRecipe != null && i.CraftingRecipe.Any(r => r.id == material.Id)).ToList();
                 Console.WriteLine("Updated: {0}, affected: {1}", material, string.Join(",", affected.Select(a => a.Name)));
                 affected.Add(material); // Also return the updated item.
                 Save();
+
+                // broadcast event via SignalR...?
                 return affected;
             }
             else
             {
+                entity.SetRepo(this);
                 entity.Id = List.Count + 1;
                 entity.High = entity.Price;
                 entity.Low = entity.Price;

@@ -19,7 +19,7 @@ namespace AuctionHouse.Modules
             Post["/material/save", true] = async (x, ct) =>
             {
                 Material m = this.Bind<Material>(); // Model binding https://github.com/NancyFx/Nancy/wiki/Model-binding
-                var updates = repo.Update(m);
+                var updates = repo.Update(m, this.Context.CurrentUser);
                 await Task.Delay(50);
                 return Response.AsJson(updates);
             };

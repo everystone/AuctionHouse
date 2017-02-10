@@ -4,7 +4,7 @@
       <input type="text" v-model="search" class="form-control" placeholder="Search" style="margin-top:15px">
     </div>
     <div class="col-sm-4">
-      <!--<chart :height="100" v-bind:chartData="chartData"></chart>-->
+      <button class="btn btn-primary" @click="loadNew()">New</button>
     </div>
 
     <modal v-if="showModal" v-bind:material="quickEditMaterial" @close="closeModal" @updated="itemsUpdated"/>
@@ -23,7 +23,7 @@
           <th width="5" v-on:click="sort('low')">Low</th>
           <th width="5" v-on:click="sort('high')">High</th>
           <th width="5" v-on:click="sort('labor')">Labor</th>
-          <th width="5" v-on:click="sort('profitPerlabor')">P/L</th>
+          <th width="5" v-on:click="sort('profitPerLabor')">P/L</th>
           <th width="5" v-on:click="sort('margin')">Margin</th>
           <th width="5">Actions</th>
 
@@ -92,6 +92,10 @@
       }
     },
     methods: {
+      loadNew() {
+        this.$store.dispatch('new')
+        this.$router.push('edit')
+      },
       quickEdit(mat){
         this.quickEditMaterial = mat
         this.showModal = true

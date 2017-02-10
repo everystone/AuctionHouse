@@ -45,7 +45,7 @@
         </tr>
       </thead>
       <tbody>
-      <tr v-for="info in getRecipeNames">
+      <tr v-for="info in recipeData">
         <td>{{ info.name }}</td>
         <td>{{ info.count }}</td>
       </tr>
@@ -62,21 +62,11 @@
       return {
         selected: {},
         count: 1,
-        error: ''
+        error: '',
+        recipeData: []
       }
     },
     computed: {
-      getRecipeNames() {
-        if (!this.material.craftingRecipe) {
-          return
-        }
-        return this.material.craftingRecipe.map(m => {
-          return {
-            name: this.$store.state.items.find(i => i.id === m.id).name,
-            count: m.count
-          }
-        })
-      },
       material: function() {
         return this.$store.state.edit
       },
@@ -87,20 +77,34 @@
     methods: {
       save() {
         this.$store.dispatch('saveEdit', this)
+        this.$router.push('home')
+      },
+      generateRecipe() {
+        if (!this.material.craftingRecipe) {
+          return
+        }
+        this.recipeData = this.material.craftingRecipe.map(m => {
+          return {
+            name: this.$store.state.items.find(i => i.id === m.id).name,
+            count: m.count
+          }
+        })
       },
       add(){
         if (this.material.craftingRecipe == null) {
           this.material.craftingRecipe = []
         }
-        console.log(this.material)
         this.material.craftingRecipe.push({
           'id': this.selected,
           'count': this.count
         })
+        this.generateRecipe()
+        console.log(this.material)
       }
     },
     created(){
       console.log('Loaded:')
+      this.generateRecipe()
       console.log(this.material)
     }
   }
